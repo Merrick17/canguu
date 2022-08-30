@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,700;0,800;1,700&display=swap');
+
+:root {
+    --main-bg-color: #F5F5F5;
+    --main-text: #000000;
+    --sperator: #E8EAECC7;
+    --header-text: #5E6E78;
+    --active-heaedr: #D3B27E;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button.iekbcc0.iekbcc9.ju367v6x.ju367v7i.ju367v94.ju367vn.ju367vds.ju367ved.ju367v11.ju367v1c.ju367v2b.ju367v8i._12cbo8i3.ju367v8g._12cbo8i4._12cbo8i6 {
+    background-color: #000000 !important;
+    width: 180px;
+    text-align: center;
+    height: 48px;
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.carousel-height {
+    background-color: red;
+}
+
+.carousel-height .carousel.carousel-slider {
+    height: 480px !important;
+}
+
+.carousel-height .slider-wrapper.axis-horizontal {
+    height: 480px !important;
+}
+
+.carousel-height .slide {
+    height: 480px !important;
+    background: green;
+
+}
+
+.carousel-height .slide div {
+    height: 480px !important;
+    background: gray;
+
+}
+
+.carousel-height .slide div img {
+    min-height: 480px !important;
+    background: gray;
+
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        color: white;
+        background: black;
+    }
+}
