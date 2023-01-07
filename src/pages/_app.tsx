@@ -13,8 +13,8 @@ import theme from "../theme";
 
 // setting up chains + connectors
 const { chains, provider } = configureChains(
-  [chain.ropsten],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
+  [chain.goerli],
+  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID })]
 );
 
 const { connectors } = getDefaultWallets({
@@ -44,12 +44,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <RainbowKitSiweNextAuthProvider
           getSiweMessageOptions={getSiweMessageOptions}
         >
-        <RainbowKitProvider chains={chains}>
-          <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </ChakraProvider>
-        </RainbowKitProvider>
+          <RainbowKitProvider chains={chains}>
+            <ChakraProvider theme={theme}>
+              <Component {...pageProps} />
+              <ToastContainer />
+            </ChakraProvider>
+          </RainbowKitProvider>
         </RainbowKitSiweNextAuthProvider>
       </SessionProvider>
     </WagmiConfig>
