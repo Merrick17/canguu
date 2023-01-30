@@ -104,30 +104,31 @@ const Create: NextPage = () => {
   }, []);
 
   const handleUpload = async () => {
-    setLoading(true);
-    // @ts-ignore
-    const ipfsHash = await ipfsClient.add(image);
-    console.log("ipfsHash", ipfsHash);
-    let url = `https://ipfs.io/ipfs/${ipfsHash.path}`;
-    console.log("ipfsHash", url);
-    let dataToUpload: any = {
-      image: url,
-      price: form.price,
-      name: form.name,
-      description: form.description,
-    };
-    let result: any = await uploadNft(dataToUpload);
-    console.log("result.path}", result.path);
-    await nftContract.mint(`https://ipfs.io/ipfs/${result.path}`);
-    const id = await nftContract.tokenCount();
-    console.log("ID", id);
-    await nftContract.setApprovalForAll(storeContractAddress, true);
-    const listingPrice = utils.parseEther(form.price.toString());
-    await storeContract.makeItem(nftContractAddress, id, listingPrice);
-    setMintData(result);
-    setLoading(false);
+    if (signer) {
+      setLoading(true);
+      // @ts-ignore
+      const ipfsHash = await ipfsClient.add(image);
+      console.log("ipfsHash", ipfsHash);
+      let url = `https://ipfs.io/ipfs/${ipfsHash.path}`;
+      console.log("ipfsHash", url);
+      let dataToUpload: any = {
+        image: url,
+        price: form.price,
+        name: form.name,
+        description: form.description,
+      };
+      let result: any = await uploadNft(dataToUpload);
+      console.log("result.path}", result.path);
+      await nftContract.mint(`https://ipfs.io/ipfs/${result.path}`);
+      const id = await nftContract.tokenCount();
+      console.log("ID", id);
+      await nftContract.setApprovalForAll(storeContractAddress, true);
+      const listingPrice = utils.parseEther(form.price.toString());
+      await storeContract.makeItem(nftContractAddress, id, listingPrice);
+      setMintData(result);
+      setLoading(false);
+    }
   };
-
   const handleInputChange = (e: any) => {
     let err = { ...error };
     // @ts-ignore
@@ -135,7 +136,6 @@ const Create: NextPage = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError({ ...err });
   };
-
   const handleError = (panel: number): number => {
     let err = { ...defaultError };
     if (panel === 0) {

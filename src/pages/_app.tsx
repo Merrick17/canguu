@@ -1,14 +1,13 @@
-import "../../styles/globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
-import { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
+import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
 import { RainbowKitSiweNextAuthProvider } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { GetSiweMessageOptions } from "@rainbow-me/rainbowkit-siwe-next-auth/dist/RainbowKitSiweNextAuthProvider";
-import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
+import "@rainbow-me/rainbowkit/styles.css";
+import { SessionProvider } from "next-auth/react";
+import { AppProps } from "next/app";
+import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import "../../styles/globals.css";
 import theme from "../theme";
 
 // setting up chains + connectors
