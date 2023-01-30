@@ -1,14 +1,10 @@
-import NftCard, { NftCardType } from "../NftCard";
 import { Box, Flex } from "@chakra-ui/layout";
-import HeadLine from "../HeadLine";
-import { useContractRead } from "wagmi";
-import { STORE_ABI } from "../../constants/nft.abi";
-import { utils } from "ethers";
-import {
-  nftContractAddress,
-  storeContractAddress,
-} from "../../constants/contractInfo";
 import { useEffect, useState } from "react";
+import { useContract, useContractRead } from "wagmi";
+import { storeContractAddress } from "../../constants/contractInfo";
+import { STORE_ABI } from "../../constants/nft.abi";
+import HeadLine from "../HeadLine";
+import { NftCardType } from "../NftCard";
 import NftCardContainer from "../NftCard/NftCardContainer";
 type ProductsType = {
   products: NftCardType[];
@@ -16,21 +12,27 @@ type ProductsType = {
 };
 
 const Products = ({ products, categoryText }: ProductsType) => {
-  const { data, isError, isLoading } = useContractRead({
+  const { data, isError, isLoading, error } = useContractRead({
     addressOrName: storeContractAddress,
     contractInterface: STORE_ABI,
     functionName: "itemCount",
   });
+  const contract = useContract({
+    addressOrName: storeContractAddress,
+    contractInterface: STORE_ABI,
+  });
+
   const [items, setItems] = useState<number[]>([]);
   useEffect(() => {
+    if (isError) {
+      console.log(error);
+    }
     !isLoading && !isError;
     {
       let result: any = data;
-      console.log("RESULT", result);
+
       if (result) {
         let itmCount = result.toNumber();
-        console.log("Item Count", itmCount);
-
         let items = Array.from(Array(itmCount).keys());
         console.log("Items", items);
         setItems(items);
@@ -45,7 +47,10 @@ const Products = ({ products, categoryText }: ProductsType) => {
 
       <Flex p={"1rem"} width={"100%"} flexWrap={"wrap"} flex={1} gap={"1rem"}>
         {items.map((it, i) => (
-          <NftCardContainer nftInd={it+1} key={"ntf-" + i + "-" + categoryText} />
+          <NftCardContainer
+            nftInd={it + 1}
+            key={"ntf-" + i + "-" + categoryText}
+          />
         ))}
       </Flex>
     </Flex>

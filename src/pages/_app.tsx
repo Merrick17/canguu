@@ -6,14 +6,19 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import "../../styles/globals.css";
 import theme from "../theme";
-
 // setting up chains + connectors
 const { chains, provider } = configureChains(
   [chain.goerli],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID })]
+  [
+    jsonRpcProvider({
+      rpc: (chain) => ({
+        http: `https://eth-goerli.public.blastapi.io`,
+      }),
+    }),
+  ]
 );
 
 const { connectors } = getDefaultWallets({
