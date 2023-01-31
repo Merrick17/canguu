@@ -1,16 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
 import { Badge, Box, Center, HStack, Image } from "@chakra-ui/react";
-import CustomButton from "../CustomButton";
-import NftModal from "./NftModal";
-import { useContract, useContractRead, useSigner } from "wagmi";
-import { NFT_ABI, STORE_ABI } from "../../constants/nft.abi";
-import axios from "axios";
-import {
-  nftContractAddress,
-  storeContractAddress,
-} from "../../constants/contractInfo";
-import CID from "cids";
 import { BigNumber, utils } from "ethers";
+import { useState } from "react";
 //import { CID } from "ipfs-http-client";
 
 export type NftCardType = {
