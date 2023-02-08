@@ -18,29 +18,22 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import { useCallback, useMemo, useState } from "react";
-import { formatNumberInput, parseNumberInput } from "../../utils/parse";
-import Dropzone from "react-dropzone";
-import Link from "next/link";
-import styles from "../../../styles/Home.module.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import {
-  useAccount,
-  useContract,
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-  useSigner,
-} from "wagmi";
-import { uploadNft } from "../../services/nftService";
-import { ipfsClient } from "../../services";
-import { NFT_ABI, STORE_ABI } from "../../constants/nft.abi";
+import { utils } from "ethers";
+import Link from "next/link";
+import { useCallback, useMemo, useState } from "react";
+import Dropzone from "react-dropzone";
+import { useAccount, useContract, useSigner } from "wagmi";
+import styles from "../../../styles/Home.module.css";
 import {
   nftContractAddress,
   storeContractAddress,
 } from "../../constants/contractInfo";
-import { utils } from "ethers";
-
+import { NFT_ABI, STORE_ABI } from "../../constants/nft.abi";
+import { ipfsClient } from "../../services";
+import { uploadNft } from "../../services/nftService";
+import { formatNumberInput, parseNumberInput } from "../../utils/parse";
+import axios from "axios";
 type formType = {
   name: string;
   price: number | string;
@@ -70,8 +63,19 @@ const Create: NextPage = () => {
   const [image, setImage] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<any>(null);
   const [mintData, setMintData] = useState<any>(null);
+  const [ethPrice, setEthPrice] = useState<number>(0);
   const { data: signer, isError, isLoading } = useSigner();
   const { isConnected } = useAccount();
+  const fetchPrice = useCallback(async () => {
+    let { data } = await axios.get(
+      "https://api.kraken.com/0/public/Ticker?pair=ETHUSD"
+    );
+    const ethPriceFetched = data.result.XETHZUSD.c[0];
+    setEthPrice(ethPriceFetched);
+  }, []);
+  useMemo(() => {
+    fetchPrice();
+  }, [fetchPrice]);
   const nftContract = useContract({
     addressOrName: nftContractAddress,
     contractInterface: NFT_ABI,
@@ -113,20 +117,24 @@ const Create: NextPage = () => {
       console.log("ipfsHash", url);
       let dataToUpload: any = {
         image: url,
-        price: form.price,
+        price: (Number(form.price) / ethPrice).toString(),
         name: form.name,
         description: form.description,
       };
       let result: any = await uploadNft(dataToUpload);
-      console.log("result.path}", result.path);
+
       await nftContract.mint(`https://ipfs.io/ipfs/${result.path}`);
       const id = await nftContract.tokenCount();
-      console.log("ID", id);
+
       await nftContract.setApprovalForAll(storeContractAddress, true);
-      const listingPrice = utils.parseEther(form.price.toString());
+      const listingPrice = utils.parseEther(
+        (Number(form.price) / ethPrice).toString()
+      );
       await storeContract.makeItem(nftContractAddress, id, listingPrice);
       setMintData(result);
       setLoading(false);
+    } else {
+      console.log("no signer");
     }
   };
   const handleInputChange = (e: any) => {
