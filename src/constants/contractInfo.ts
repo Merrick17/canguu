@@ -1,6 +1,6 @@
-const nftContractAddress: string = "0xBa742D81Cc760db863C353EC48E02F9F5480F9DE";
+const nftContractAddress: string = "0xcb5ED713eb703de56Dab8284784Fa9FBcF1d02DC";
 const storeContractAddress: string =
-  "0xAf4a7b3459C529E510D452d8F1C1C275F6f4A404";
+  "0x77175C008cCe341b19FF74eBdfdFE56397938ec9";
 import { NFT_ABI } from "./nft.abi";
 
 export { nftContractAddress, storeContractAddress, NFT_ABI };

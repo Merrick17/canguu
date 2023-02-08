@@ -1,15 +1,13 @@
-import NftCard, { NftCardType } from "../NftCard";
 import { Box, Flex } from "@chakra-ui/layout";
-import HeadLine from "../HeadLine";
-import { useAccount, useContract, useContractRead, useSigner } from "wagmi";
-import { NFT_ABI, STORE_ABI } from "../../constants/nft.abi";
-import { utils } from "ethers";
+import { useEffect, useState } from "react";
+import { useAccount, useContract, useSigner } from "wagmi";
 import {
   nftContractAddress,
-  storeContractAddress,
+  storeContractAddress
 } from "../../constants/contractInfo";
-import { useEffect, useState } from "react";
-import NftCardContainer from "../NftCard/NftCardContainer";
+import { NFT_ABI, STORE_ABI } from "../../constants/nft.abi";
+import HeadLine from "../HeadLine";
+import { NftCardType } from "../NftCard";
 import UserNftCard from "../UserNftCard";
 type ProductsType = {
   products: NftCardType[];
