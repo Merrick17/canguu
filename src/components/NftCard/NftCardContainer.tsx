@@ -15,9 +15,9 @@ const NftCardContainer = ({ nftInd }: NftCardContainerType) => {
   });
   const [tokenInfo, setTokenInfo] = useState<any>(null);
   useEffect(() => {
-    console.log("Data", data);
+  
     if (!isLoading && data) {
-      console.log("Data", data);
+     
       let info: any = data;
       setTokenInfo({
         tokenId: info["tokenId"].toNumber(),

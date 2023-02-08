@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Badge, Box, Center, HStack, Image } from "@chakra-ui/react";
 import CustomButton from "../CustomButton";
 import NftModal from "./NftModal";
@@ -34,32 +34,24 @@ const NftCard = ({ nft }: { nft: any }) => {
     contractInterface: STORE_ABI,
     signerOrProvider: signer,
   });
-  const initNftData = async () => {
-    console.log("NFT INFO", nft);
+
+  const initNftData = useCallback(async () => {
     try {
-      let uri = await nftContract.tokenURI(nft.tokenId);
-      console.log("URI", uri);
-      if (uri) {
-        const { data } = await axios.get(uri);
-        console.log("Data", data);
-        setNftInfo(data);
+      if (nft && nftContract) {
+        let uri = await nftContract.tokenURI(nft.tokenId);
+        if (uri) {
+          const { data } = await axios.get(uri);
+          setNftInfo(data);
+        }
       }
-      // if (tokenInfo.data) {
-      //   const { data } = await axios.get(
-      //     `https://ipfs.infura.io/ipfs/${tokenInfo.data}`
-      //   );
-      //   console.log("Data", tokenInfo.data);
-      //   let str: any = tokenInfo.data;
-      //   displayImageUrl(str);
-      //   setNftInfo(data);
-      // }
     } catch (error: any) {
       console.log("ERR", error.message);
     }
-  };
+  }, [nft, nftContract]);
+
   useEffect(() => {
     initNftData();
-  }, [nft]);
+  }, [initNftData]);
   const handleBuy = () => {
     setOpen(true);
   };

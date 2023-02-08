@@ -34,6 +34,7 @@ const NftModal = ({ isOpen, onClose, nftBody, marketId }: NftModalType) => {
   const handlePurchase = async () => {
     try {
       const totalPrice = await storeContract.getTotalPrice(marketId);
+      console.log("Total Price", totalPrice.toNumber());
       await storeContract.buyItem(marketId, { value: totalPrice });
       onClose();
     } catch (error: any) {
